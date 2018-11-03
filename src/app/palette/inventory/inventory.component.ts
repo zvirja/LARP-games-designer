@@ -42,6 +42,6 @@ export class InventoryComponent implements OnInit {
   }
 
   delete(id: number) {
-    this._entityService.deleteEntity(id);
+    this._entityService.deleteEntityWithRelations(id);
   }
 }

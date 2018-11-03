@@ -17,7 +17,7 @@ export class EntitiesGroupComponent {
   set ids(value: number[]) {
     this._ids = value;
     this.mappedEntities = value
-      .map(id => this._entityService.findById(id))
+      .map(id => this._entityService.findEntityById(id))
       .filter((x): x is Entity => !!x);
   }
 

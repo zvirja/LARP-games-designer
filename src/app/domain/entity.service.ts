@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable } from "rxjs";
 import { Entity, EntityType } from "./entity";
+import { Relation, RelationType } from "./relation";
 
 type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
@@ -10,19 +11,19 @@ export class EntityService {
 
   private _entities$ = new BehaviorSubject<Entity[]>([
     // Chars
-    new Entity(1, EntityType.Character, 'Alex'),
-    new Entity(2, EntityType.Character, 'Olga'),
-    new Entity(3, EntityType.Character, 'Afen'),
+    new Entity(this._idCounter++, EntityType.Character, 'Alex'),
+    new Entity(this._idCounter++, EntityType.Character, 'Olga'),
+    new Entity(this._idCounter++, EntityType.Character, 'Afen'),
 
     // Goals
-    new Entity(4, EntityType.Goal, 'Find the heaven'),
-    new Entity(5, EntityType.Goal, 'Destroy the world'),
-    new Entity(6, EntityType.Goal, 'Find a cup of tea'),
+    new Entity(this._idCounter++, EntityType.Goal, 'Find the heaven'),
+    new Entity(this._idCounter++, EntityType.Goal, 'Destroy the world'),
+    new Entity(this._idCounter++, EntityType.Goal, 'Find a cup of tea'),
 
     // Inventory
-    new Entity(7, EntityType.Inventory, 'Knife'),
-    new Entity(8, EntityType.Inventory, 'Pen'),
-    new Entity(9, EntityType.Inventory, 'Teapot'),
+    new Entity(this._idCounter++, EntityType.Inventory, 'Knife'),
+    new Entity(this._idCounter++, EntityType.Inventory, 'Pen'),
+    new Entity(this._idCounter++, EntityType.Inventory, 'Teapot'),
   ]);
   get entities$(): Observable<ReadonlyArray<Entity>> {
     return this._entities$.asObservable();
@@ -31,7 +32,15 @@ export class EntityService {
     return this._entities$.value;
   }
 
-  findById(id: number) {
+  private _relations$ = new BehaviorSubject<Relation[]>([]);
+  get relations$() {
+    return this._relations$.asObservable();
+  }
+  private get relations() {
+    return this._relations$.value;
+  }
+
+  findEntityById(id: number) {
     const index = this.entities.findIndex(x => x.id === id);
     if (index === -1) {
       return null;
@@ -46,15 +55,22 @@ export class EntityService {
     return newEntity;
   }
 
-  deleteEntity(id: number) {
+  deleteEntityWithRelations(id: number) {
     const index = this.entities.findIndex(v => v.id === id);
     if (index === -1) {
       return false;
     }
 
-    const copy = [...this.entities];
-    copy.splice(index, 1);
-    this._entities$.next(copy);
+    const newEntities = [...this.entities];
+    newEntities.splice(index, 1);
+    this._entities$.next(newEntities);
+
+    // Remove all the relations related to the current entity.
+    const newRelations = this.relations.filter(x => x.idFrom !== id && x.idTo !== id);
+    if (newRelations.length !== this.relations.length) {
+      this._relations$.next(newRelations);
+    }
+
     return true;
   }
 
@@ -75,4 +91,53 @@ export class EntityService {
     this._entities$.next(copy)
   }
 
+  addRelation(type: RelationType, label: string, idFrom: number, idTo: number) {
+    this.assertEntityExists(idFrom);
+    this.assertEntityExists(idTo);
+
+    const relation = new Relation(this._idCounter++, type, label, idFrom, idTo)
+    this._relations$.next([...this.relations, relation])
+
+    return relation;
+  }
+
+  deleteRelation(relationId: number) {
+    const index = this.relations.findIndex(x => x.id === relationId);
+    if (!index) {
+      return false;
+    }
+
+    const newRelations = [...this.relations];
+    newRelations.splice(index, 1);
+    this._relations$.next(newRelations);
+
+    return true;
+  }
+
+  findAllRelatedEntities(entityId: number) {
+    this.assertEntityExists(entityId);
+
+    const result = this.relations
+      .reduce((memo, r) => {
+        if (r.idFrom === entityId) {
+          memo.add(r.idTo)
+        }
+
+        if (r.idTo === entityId) {
+          memo.add(r.idFrom)
+        }
+
+        return memo;
+      }, new Set<number>());
+
+    return Array.from(result)
+      .map(id => this.findEntityById(id))
+      .filter((x): x is Entity => !!x);
+  }
+
+  private assertEntityExists(id: number) {
+    if (!this.findEntityById(id)) {
+      throw new Error(`Entity with id ${id} does not exist.`)
+    }
+  }
 }
