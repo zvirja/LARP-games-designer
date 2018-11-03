@@ -9,6 +9,7 @@ import { CanvasComponent } from './canvas/canvas.component';
 import { EntitiesGroupComponent } from './palette/entities-group/entities-group.component';
 import { InventoryComponent } from './palette/inventory/inventory.component';
 import { CreateNewEntityDialogComponent } from './palette/create-new-entity-dialog/create-new-entity-dialog.component';
+import { EditEntityRelationsDialogComponent } from './palette/edit-entity-relations-dialog/edit-entity-relations-dialog.component';
 
 @NgModule({
   imports: [
@@ -31,9 +32,10 @@ import { CreateNewEntityDialogComponent } from './palette/create-new-entity-dial
     CanvasComponent,
     EntitiesGroupComponent,
     InventoryComponent,
-    CreateNewEntityDialogComponent
+    CreateNewEntityDialogComponent,
+    EditEntityRelationsDialogComponent
   ],
-  entryComponents: [CreateNewEntityDialogComponent],
+  entryComponents: [CreateNewEntityDialogComponent, EditEntityRelationsDialogComponent],
   providers: [],
   bootstrap: [AppComponent]
 })

@@ -25,6 +25,7 @@ export class EntitiesGroupComponent {
 
   @Output() readonly delete = new EventEmitter<number>();
   @Output() readonly select = new EventEmitter<number>();
+  @Output() readonly editRelations = new EventEmitter<number>();
 
   constructor(private _entityService: EntityService) { }
 }

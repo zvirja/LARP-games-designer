@@ -15,6 +15,7 @@
 
 <mat-menu #entityMenu>
   <ng-template matMenuContent let-id="id">
+    <button mat-menu-item (click)="editRelations.next(id)">Edit relations</button>
     <button mat-menu-item class="warn" (click)="delete.next(id)">Remove</button>
   </ng-template>
 </mat-menu>
