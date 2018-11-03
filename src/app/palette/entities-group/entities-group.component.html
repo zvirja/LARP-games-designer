@@ -3,7 +3,8 @@
 
 <mat-list>
   <mat-list-item *ngFor="let entity of mappedEntities">
-    <div class="label" (click)="select.next(entity.id)">
+    <mat-checkbox (change)="$event ? select.next(entity.id) : null" #check>&nbsp;</mat-checkbox>
+    <div class="label" (click)="check.toggle()">
       {{ entity.label }}
     </div>
     <button mat-icon-button [matMenuTriggerFor]="entityMenu" [matMenuTriggerData]="{ id: entity.id }">
