@@ -1,0 +1,5 @@
+<h3>{{ title }}</h3>
+<hr />
+<ul>
+  <li *ngFor="let entity of entities$ | async">{{ entity.label }}</li>
+</ul>

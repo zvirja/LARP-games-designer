@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
-import { DataSet, Network } from 'vis'
+import { DataSet, Network, Node, Options } from 'vis'
 
 @Component({
   selector: 'app-canvas',
@@ -13,13 +13,14 @@ export class CanvasComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // create an array with nodes
-    const nodes = new DataSet([
-      { id: 1, label: 'Node 1' },
-      { id: 2, label: 'Node 2' },
-      { id: 3, label: 'Node 3' },
+    const nodesArray: Node[] = [
+      { id: 1, label: 'Node 1', shape: 'circle' },
+      { id: 2, label: 'Node 2', shape: 'diamond', size: 20 },
+      { id: 3, label: 'Node 3', },
       { id: 4, label: 'Node 4' },
       { id: 5, label: 'Node 5' }
-    ]);
+    ]
+    const nodes = new DataSet(nodesArray);
 
     // create an array with edges
     const edges = new DataSet([
@@ -34,7 +35,11 @@ export class CanvasComponent implements OnInit, OnDestroy {
       nodes: nodes,
       edges: edges
     };
-    const options = {};
+    const options: Options = {
+      physics: {
+        enabled: false
+      }
+    };
 
     // initialize your network!
     this._network = new Network(this._elRef.nativeElement, data, options);
