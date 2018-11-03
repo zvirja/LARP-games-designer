@@ -1,0 +1,22 @@
+<h1 mat-dialog-title>Create entity</h1>
+<div mat-dialog-content>
+  Type:
+  <mat-form-field>
+    <mat-select [(value)]="type">
+      <mat-option [value]="EntityType.Character">Character</mat-option>
+      <mat-option [value]="EntityType.Goal">Goal</mat-option>
+      <mat-option [value]="EntityType.Inventory">Inventory</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <br />
+
+  Name:
+  <mat-form-field>
+    <input matInput [(ngModel)]="name" type="text" cdkFocusInitial>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-stroked-button color="primary" [mat-dialog-close]="{ type: type, name: name }">Create</button>
+  <button mat-stroked-button (click)="cancel()">Cancel</button>
+</div>

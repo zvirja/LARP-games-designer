@@ -9,9 +9,20 @@ export class EntityService {
   private _idCounter = 0;
 
   private _entities$ = new BehaviorSubject<Entity[]>([
+    // Chars
     new Entity(1, EntityType.Character, 'Alex'),
     new Entity(2, EntityType.Character, 'Olga'),
     new Entity(3, EntityType.Character, 'Afen'),
+
+    // Goals
+    new Entity(4, EntityType.Goal, 'Find the heaven'),
+    new Entity(5, EntityType.Goal, 'Destroy the world'),
+    new Entity(6, EntityType.Goal, 'Find a cup of tea'),
+
+    // Inventory
+    new Entity(7, EntityType.Inventory, 'Knife'),
+    new Entity(8, EntityType.Inventory, 'Pen'),
+    new Entity(9, EntityType.Inventory, 'Teapot'),
   ]);
   get entities$(): Observable<ReadonlyArray<Entity>> {
     return this._entities$.asObservable();
@@ -30,7 +41,7 @@ export class EntityService {
   }
 
   createEntity(type: EntityType, label: string) {
-    const newEntity = new Entity(type, this._idCounter++, name);
+    const newEntity = new Entity(this._idCounter++, type, label);
     this._entities$.next([...this.entities, newEntity])
     return newEntity;
   }
@@ -41,7 +52,9 @@ export class EntityService {
       return false;
     }
 
-    this._entities$.next(this.entities.splice(index, 1));
+    const copy = [...this.entities];
+    copy.splice(index, 1);
+    this._entities$.next(copy);
     return true;
   }
 

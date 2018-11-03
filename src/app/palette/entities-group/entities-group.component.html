@@ -1,5 +1,19 @@
 <h3>{{ title }}</h3>
-<hr />
-<ul>
-  <li *ngFor="let entity of entities$ | async">{{ entity.label }}</li>
-</ul>
+<mat-divider></mat-divider>
+
+<mat-list>
+  <mat-list-item *ngFor="let entity of mappedEntities">
+    <div class="label" (click)="select.next(entity.id)">
+      {{ entity.label }}
+    </div>
+    <button mat-icon-button [matMenuTriggerFor]="entityMenu" [matMenuTriggerData]="{ id: entity.id }">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+  </mat-list-item>
+</mat-list>
+
+<mat-menu #entityMenu>
+  <ng-template matMenuContent let-id="id">
+    <button mat-menu-item class="warn" (click)="delete.next(id)">Remove</button>
+  </ng-template>
+</mat-menu>
