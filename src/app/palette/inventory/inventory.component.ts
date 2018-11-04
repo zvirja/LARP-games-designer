@@ -48,7 +48,12 @@ export class InventoryComponent implements OnInit {
   }
 
   edit(id: number) {
-    EntityInfoDialogComponent.showDialog(id, this._dialog);
+    EntityInfoDialogComponent.showDialog(id, this._dialog)
+      .subscribe(updateResult => {
+        if (updateResult) {
+          this._entityService.updateEntity(id, updateResult);
+        }
+      });
   }
 
   editRelations(id: number) {

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { MatListModule, MatCheckboxModule, MatButtonModule, MatMenuModule, MatCommonModule, MatIconModule, MatDialogModule, MatFormFieldModule, MatSelectModule, MatInputModule } from '@angular/material'
+import { QuillModule } from 'ngx-quill'
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -18,6 +19,7 @@ import { EntityInfoDialogComponent } from './palette/dialogs/entity-info-dialog/
     BrowserAnimationsModule,
     FormsModule,
     AppRoutingModule,
+    QuillModule,
     MatListModule,
     MatCheckboxModule,
     MatButtonModule,

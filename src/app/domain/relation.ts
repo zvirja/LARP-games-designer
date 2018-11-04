@@ -1,4 +1,4 @@
-type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+import { Omit, Mutable } from "./utils";
 
 export enum RelationType {
   Primary,
@@ -13,4 +13,4 @@ export class Relation {
     public readonly entities: Readonly<[number, number]>) { }
 }
 
-export type RelationUpdate = Omit<Partial<Relation>, 'id'>
+export type RelationUpdate = Omit<Partial<Mutable<Relation>>, 'id'>

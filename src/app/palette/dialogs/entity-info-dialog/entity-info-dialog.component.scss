@@ -1,4 +1,21 @@
-.content {
+:host {
   display: flex;
   flex-direction: column;
+  min-height: 70vh;
+}
+
+.content {
+  flex: 1 1 auto;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.edit-container {
+  flex: 1 1 auto;
+  overflow: auto;
+}
+
+button {
+  margin-right: 10px;
 }

@@ -47,8 +47,8 @@ export class EntityService {
     return this.entities[index];
   }
 
-  createEntity(type: EntityType, label: string) {
-    const newEntity = new Entity(this._idCounter++, type, label);
+  createEntity(type: EntityType, label: string, description?: string) {
+    const newEntity = new Entity(this._idCounter++, type, label, description);
     this._entities$.next([...this.entities, newEntity])
     return newEntity;
   }
@@ -83,7 +83,7 @@ export class EntityService {
       ...entity,
       ...newValues
     }
-    const newChar = new Entity(entity.id, entity.type, newProps.label);
+    const newChar = new Entity(entity.id, entity.type, newProps.label, newProps.description);
     let copy = [...this.entities];
     copy[index] = newChar;
     this._entities$.next(copy)
