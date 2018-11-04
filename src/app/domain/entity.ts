@@ -1,3 +1,5 @@
+type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+
 export enum EntityType {
   Character,
   Goal,
@@ -8,3 +10,5 @@ export enum EntityType {
 export class Entity {
   constructor(public readonly id: number, public readonly type: EntityType, public readonly label: string) { }
 }
+
+export type EntityUpdate = Omit<Partial<Entity>, 'id' | 'type'>

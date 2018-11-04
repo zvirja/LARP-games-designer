@@ -1,9 +1,7 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable } from "rxjs";
-import { Entity, EntityType } from "./entity";
-import { Relation, RelationType } from "./relation";
-
-type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+import { Entity, EntityType, EntityUpdate } from "./entity";
+import { Relation, RelationType, RelationUpdate } from "./relation";
 
 @Injectable({ providedIn: 'root' })
 export class EntityService {
@@ -66,7 +64,7 @@ export class EntityService {
     this._entities$.next(newEntities);
 
     // Remove all the relations related to the current entity.
-    const newRelations = this.relations.filter(x => x.idFrom !== id && x.idTo !== id);
+    const newRelations = this.relations.filter(x => x.entities[0] !== id && x.entities[1] !== id);
     if (newRelations.length !== this.relations.length) {
       this._relations$.next(newRelations);
     }
@@ -74,7 +72,7 @@ export class EntityService {
     return true;
   }
 
-  updateEntity(id: number, newValues: Omit<Partial<Entity>, 'id' | 'type'>) {
+  updateEntity(id: number, newValues: EntityUpdate) {
     const index = this.entities.findIndex(x => x.id === id);
     if (index < 0) {
       throw new Error(`Unable to find char by id: ${id}`);
@@ -91,11 +89,11 @@ export class EntityService {
     this._entities$.next(copy)
   }
 
-  addRelation(type: RelationType, label: string, idFrom: number, idTo: number) {
-    this.assertEntityExists(idFrom);
-    this.assertEntityExists(idTo);
+  addRelation(type: RelationType, label: string, entities: [number, number]) {
+    this.assertEntityExists(entities[0]);
+    this.assertEntityExists(entities[1]);
 
-    const relation = new Relation(this._idCounter++, type, label, idFrom, idTo)
+    const relation = new Relation(this._idCounter++, type, label, entities)
     this._relations$.next([...this.relations, relation])
 
     return relation;
@@ -114,17 +112,40 @@ export class EntityService {
     return true;
   }
 
+  updateRelation(relationId: number, update: RelationUpdate) {
+    const relationIndex = this.relations.findIndex(x => x.id === relationId);
+    if (relationIndex < 0) {
+      throw new Error(`Unable to find relation by id ${relationId}.`)
+    }
+
+    if (update.entities) {
+      this.assertEntityExists(update.entities[0]);
+      this.assertEntityExists(update.entities[1]);
+    }
+
+    const relation = this.relations[relationIndex];
+    const newProperties = {
+      ...relation,
+      ...update
+    }
+    const newRelation = new Relation(relation.id, newProperties.type, newProperties.label, newProperties.entities);
+
+    let copy = [...this.relations];
+    copy[relationIndex] = newRelation;
+    this._relations$.next(copy);
+  }
+
   findAllRelatedEntities(entityId: number) {
     this.assertEntityExists(entityId);
 
     const result = this.relations
       .reduce((memo, r) => {
-        if (r.idFrom === entityId) {
-          memo.add(r.idTo)
+        if (r.entities[0] === entityId) {
+          memo.add(r.entities[1])
         }
 
-        if (r.idTo === entityId) {
-          memo.add(r.idFrom)
+        if (r.entities[1] === entityId) {
+          memo.add(r.entities[0])
         }
 
         return memo;
