@@ -1,4 +1,12 @@
 .label {
   flex: 1 1 auto;
+
+  display: flex;
+  align-items: center;
+
   cursor: pointer;
+}
+
+button.compact {
+  width: auto;
 }

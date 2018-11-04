@@ -10,6 +10,7 @@ import { EntitiesGroupComponent } from './palette/entities-group/entities-group.
 import { InventoryComponent } from './palette/inventory/inventory.component';
 import { CreateNewEntityDialogComponent } from './palette/create-new-entity-dialog/create-new-entity-dialog.component';
 import { EditEntityRelationsDialogComponent } from './palette/edit-entity-relations-dialog/edit-entity-relations-dialog.component';
+import { EntityPickerComponent } from './palette/entity-picker/entity-picker.component';
 
 @NgModule({
   imports: [
@@ -33,7 +34,8 @@ import { EditEntityRelationsDialogComponent } from './palette/edit-entity-relati
     EntitiesGroupComponent,
     InventoryComponent,
     CreateNewEntityDialogComponent,
-    EditEntityRelationsDialogComponent
+    EditEntityRelationsDialogComponent,
+    EntityPickerComponent,
   ],
   entryComponents: [CreateNewEntityDialogComponent, EditEntityRelationsDialogComponent],
   providers: [],

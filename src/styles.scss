@@ -18,3 +18,7 @@ html, body {
 .mat-selection-list .mat-list-option {
   height: auto !important;
 }
+
+mat-icon.action:hover {
+  font-weight: bold;
+}

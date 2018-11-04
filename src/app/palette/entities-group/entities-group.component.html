@@ -5,10 +5,16 @@
   <mat-list-item *ngFor="let entity of mappedEntities">
     <mat-checkbox (change)="$event ? select.next(entity.id) : null" #check>&nbsp;</mat-checkbox>
     <div class="label" (click)="check.toggle()">
-      {{ entity.label }}
+      <div>{{ entity.label }}</div>
     </div>
+    <button mat-icon-button class="compact" title="Edit relations" (click)="editRelations.next(entity.id)">
+      <mat-icon class="action">swap_horiz</mat-icon>
+    </button>
+    <button mat-icon-button class="compact" title="Details">
+      <mat-icon class="action">list_alt</mat-icon>
+    </button>
     <button mat-icon-button [matMenuTriggerFor]="entityMenu" [matMenuTriggerData]="{ id: entity.id }">
-      <mat-icon>more_vert</mat-icon>
+      <mat-icon class="action">more_vert</mat-icon>
     </button>
   </mat-list-item>
 </mat-list>

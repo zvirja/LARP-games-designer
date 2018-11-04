@@ -1,0 +1,9 @@
+mat-select-trigger {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  > :first-child {
+    margin-right: 5px;
+  }
+}

@@ -1,0 +1,14 @@
+<mat-form-field>
+  <mat-select [(value)]="selectedOption" #picker>
+    <mat-select-trigger>
+      <ng-container *ngIf="findById(picker.value); let modelById">
+        <mat-icon>{{ modelById.icon }}</mat-icon>
+        <span>{{ modelById.label }}</span>
+      </ng-container>
+    </mat-select-trigger>
+    <mat-option *ngFor="let option of (options$ | async)" [value]="option.id">
+      <mat-icon>{{ option.icon }}</mat-icon>
+      <span>{{ option.label }}</span>
+    </mat-option>
+  </mat-select>
+</mat-form-field>
