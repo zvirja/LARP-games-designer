@@ -20,9 +20,7 @@ export class EditEntityRelationsDialogComponent implements OnInit {
     this._dialogRef.close();
   }
 
-  save() {
-
-  }
+  save() { }
 
 
 }

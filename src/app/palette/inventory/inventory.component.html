@@ -1,8 +1,8 @@
 <h2>Entities</h2>
 <button mat-stroked-button (click)="createNew()">Add new</button>
 
-<app-entities-group [title]="'Characters'" [ids]="characterIds$ | async" (delete)="delete($event)" (editRelations)="editRelations($event)"></app-entities-group>
+<app-entities-group [title]="'Characters'" [ids]="characterIds$ | async" (delete)="delete($event)" (editRelations)="editRelations($event)" (edit)="edit($event)"></app-entities-group>
 
-<app-entities-group [title]="'Goals'" [ids]="goalIds$ | async" (delete)="delete($event)" (editRelations)="editRelations($event)"></app-entities-group>
+<app-entities-group [title]="'Goals'" [ids]="goalIds$ | async" (delete)="delete($event)" (editRelations)="editRelations($event)" (edit)="edit($event)"></app-entities-group>
 
-<app-entities-group [title]="'Inventory items'" [ids]="itemIds$ | async" (delete)="delete($event)" (editRelations)="editRelations($event)"></app-entities-group>
+<app-entities-group [title]="'Inventory items'" [ids]="itemIds$ | async" (delete)="delete($event)" (editRelations)="editRelations($event)" (edit)="edit($event)"></app-entities-group>

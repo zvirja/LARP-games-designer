@@ -41,7 +41,7 @@ export class EntityService {
   findEntityById(id: number) {
     const index = this.entities.findIndex(x => x.id === id);
     if (index === -1) {
-      return null;
+      return undefined;
     }
 
     return this.entities[index];

@@ -8,9 +8,10 @@ import { AppComponent } from './app.component';
 import { CanvasComponent } from './canvas/canvas.component';
 import { EntitiesGroupComponent } from './palette/entities-group/entities-group.component';
 import { InventoryComponent } from './palette/inventory/inventory.component';
-import { CreateNewEntityDialogComponent } from './palette/create-new-entity-dialog/create-new-entity-dialog.component';
-import { EditEntityRelationsDialogComponent } from './palette/edit-entity-relations-dialog/edit-entity-relations-dialog.component';
+import { CreateNewEntityDialogComponent } from './palette/dialogs/create-new-entity-dialog/create-new-entity-dialog.component';
+import { EditEntityRelationsDialogComponent } from './palette/dialogs/edit-entity-relations-dialog/edit-entity-relations-dialog.component';
 import { EntityPickerComponent } from './palette/entity-picker/entity-picker.component';
+import { EntityInfoDialogComponent } from './palette/dialogs/entity-info-dialog/entity-info-dialog.component';
 
 @NgModule({
   imports: [
@@ -36,8 +37,9 @@ import { EntityPickerComponent } from './palette/entity-picker/entity-picker.com
     CreateNewEntityDialogComponent,
     EditEntityRelationsDialogComponent,
     EntityPickerComponent,
+    EntityInfoDialogComponent,
   ],
-  entryComponents: [CreateNewEntityDialogComponent, EditEntityRelationsDialogComponent],
+  entryComponents: [CreateNewEntityDialogComponent, EditEntityRelationsDialogComponent, EntityInfoDialogComponent],
   providers: [],
   bootstrap: [AppComponent]
 })

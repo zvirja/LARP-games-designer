@@ -10,7 +10,7 @@
     <button mat-icon-button class="compact" title="Edit relations" (click)="editRelations.next(entity.id)">
       <mat-icon class="action">swap_horiz</mat-icon>
     </button>
-    <button mat-icon-button class="compact" title="Details">
+    <button mat-icon-button class="compact" title="Details" (click)="edit.next(entity.id)">
       <mat-icon class="action">list_alt</mat-icon>
     </button>
     <button mat-icon-button [matMenuTriggerFor]="entityMenu" [matMenuTriggerData]="{ id: entity.id }">

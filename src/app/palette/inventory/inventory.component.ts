@@ -4,8 +4,9 @@ import { EMPTY, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { EntityType } from 'src/app/domain/entity';
 import { EntityService } from 'src/app/domain/entity.service';
-import { CreateNewEntityDialogComponent } from '../create-new-entity-dialog/create-new-entity-dialog.component';
-import { EditEntityRelationsDialogComponent } from '../edit-entity-relations-dialog/edit-entity-relations-dialog.component';
+import { CreateNewEntityDialogComponent } from '../dialogs/create-new-entity-dialog/create-new-entity-dialog.component';
+import { EditEntityRelationsDialogComponent } from '../dialogs/edit-entity-relations-dialog/edit-entity-relations-dialog.component';
+import { EntityInfoDialogComponent } from '../dialogs/entity-info-dialog/entity-info-dialog.component';
 
 @Component({
   selector: 'app-inventory',
@@ -44,6 +45,10 @@ export class InventoryComponent implements OnInit {
 
   delete(id: number) {
     this._entityService.deleteEntityWithRelations(id);
+  }
+
+  edit(id: number) {
+    EntityInfoDialogComponent.showDialog(id, this._dialog);
   }
 
   editRelations(id: number) {
