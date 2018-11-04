@@ -3,7 +3,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Observable } from 'rxjs';
 import { EntityUpdate, Entity } from 'src/app/domain/entity';
 import { EntityService } from 'src/app/domain/entity.service';
-import { Mutable } from '@angular/core/src/type';
+import { Mutable } from 'src/app/domain/utils';
 
 @Component({
   selector: 'app-entity-info-dialog',
@@ -12,7 +12,7 @@ import { Mutable } from '@angular/core/src/type';
 })
 export class EntityInfoDialogComponent implements OnInit {
   entity: Entity;
-  entityEditable: Partial<Entity> = {};
+  entityEditable: Mutable<Entity>;
 
   static showDialog(entityId: number, dialogService: MatDialog): Observable<EntityUpdate | undefined> {
     return dialogService.open(EntityInfoDialogComponent, { data: entityId }).afterClosed();

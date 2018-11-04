@@ -30,7 +30,11 @@ export class EntityService {
     return this._entities$.value;
   }
 
-  private _relations$ = new BehaviorSubject<Relation[]>([]);
+  private _relations$ = new BehaviorSubject<Relation[]>([
+    new Relation(this._idCounter++, RelationType.Primary, 'Loves', [0, 1]),
+    new Relation(this._idCounter++, RelationType.Auxiliary, 'Wants', [0, 2]),
+    new Relation(this._idCounter++, RelationType.Auxiliary, 'Dream', [0, 4])
+  ]);
   get relations$() {
     return this._relations$.asObservable();
   }
@@ -154,6 +158,12 @@ export class EntityService {
     return Array.from(result)
       .map(id => this.findEntityById(id))
       .filter((x): x is Entity => !!x);
+  }
+
+  getAllEntityRelations(entityId: number) {
+    this.assertEntityExists(entityId);
+
+    return this.relations.filter(r => r.entities[0] === entityId || r.entities[1] === entityId);
   }
 
   private assertEntityExists(id: number) {

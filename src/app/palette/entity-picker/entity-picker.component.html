@@ -1,5 +1,5 @@
 <mat-form-field>
-  <mat-select [(value)]="selectedOption" #picker>
+  <mat-select [(value)]="selectedOption" [placeholder]="placeholder" #picker>
     <mat-select-trigger>
       <ng-container *ngIf="findById(picker.value); let modelById">
         <mat-icon>{{ modelById.icon }}</mat-icon>

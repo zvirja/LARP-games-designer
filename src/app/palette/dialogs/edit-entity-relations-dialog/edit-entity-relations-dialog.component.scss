@@ -1,3 +1,25 @@
-button {
+:host {
+  display: flex;
+  flex-direction: column;
+
+  width: 60vw;
+  height: 60vh;
+}
+
+.mat-dialog-content {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+
+  mat-table {
+    flex: 1 1 auto;
+  }
+}
+
+.add-new-button {
+  flex: 0 0 auto;
+}
+
+.mat-dialog-actions button {
   margin-right: 10px;
 }

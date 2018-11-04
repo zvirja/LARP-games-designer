@@ -1,8 +1,62 @@
-<h1 mat-dialog-title>Relations editor</h1>
+<h1 mat-dialog-title>Relations – <mat-icon>{{ entityIcon }} </mat-icon> {{ entity.label }}</h1>
 <div mat-dialog-content>
-  <app-entity-picker></app-entity-picker>
+  <mat-table [dataSource]="entityRelationsEditable">
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+      <mat-cell *matCellDef="let relation">
+        <mat-form-field>
+          <input matInput [(ngModel)]="relation.label">
+        </mat-form-field>
+      </mat-cell>
+    </ng-container>
+
+    <!-- Relation -->
+    <ng-container matColumnDef="relation">
+      <mat-header-cell *matHeaderCellDef>Related to</mat-header-cell>
+      <mat-cell *matCellDef="let relation">
+        <app-entity-picker [(entityId)]="relation.entities[1]"></app-entity-picker>
+      </mat-cell>
+    </ng-container>
+
+    <!-- Relation -->
+    <ng-container matColumnDef="type">
+      <mat-header-cell *matHeaderCellDef>Type</mat-header-cell>
+      <mat-cell *matCellDef="let relation">
+        <mat-form-field>
+          <mat-select [(ngModel)]="relation.type">
+            <mat-option [value]="RelationType.Primary">Primary</mat-option>
+            <mat-option [value]="RelationType.Auxiliary">Auxiliary</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-cell>
+    </ng-container>
+
+    <!-- Actions -->
+    <ng-container matColumnDef="actions" stickyEnd>
+      <mat-header-cell *matHeaderCellDef fxFlex="50px">Actions</mat-header-cell>
+      <mat-cell *matCellDef="let relation" fxFlex="50px">
+        <button mat-icon-button [matMenuTriggerFor]="menu" [matMenuTriggerData]="{ id: relation.id }">
+          <mat-icon class="action">more_vert</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="['name', 'relation', 'type']; sticky: true"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: ['name', 'relation', 'type', 'actions'];"></mat-row>
+  </mat-table>
+
 </div>
+
+<button class="add-new-button" mat-stroked-button color="primary" (click)="addNew()">Add new relation</button>
+
 <div mat-dialog-actions>
-  <button mat-stroked-button class="primary" [mat-dialog-close]="save()" cdkFocusInitial>Save</button>
+  <button mat-stroked-button class="primary" (click)="save()" cdkFocusInitial>Save</button>
   <button mat-stroked-button (click)="discard()">Discard</button>
 </div>
+
+<mat-menu #menu>
+  <ng-template matMenuContent let-id="id">
+    <button mat-menu-item class="warn" (click)="removeRelation(id)">Remove</button>
+  </ng-template>
+</mat-menu>

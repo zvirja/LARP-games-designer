@@ -3,6 +3,7 @@ import { EMPTY, Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { EntityType } from 'src/app/domain/entity';
 import { EntityService } from 'src/app/domain/entity.service';
+import { mapEntityTypeToIcon } from '../presentation-util';
 
 interface EntityModel {
   id: number,
@@ -32,12 +33,14 @@ export class EntityPickerComponent implements OnInit {
   @Input() entityId?: number;
   @Output() entityIdChange = new EventEmitter<number | undefined>();
 
+  @Input() placeholder?: string;
+
   constructor(private readonly _entityService: EntityService) { }
 
   ngOnInit() {
     this.options$ = this._entityService.entities$.pipe(
       map(entities => entities
-        .map(({ id, label, type }) => ({ id, label, type, icon: this.mapTypeToIcon(type) }))
+        .map(({ id, label, type }) => ({ id, label, type, icon: mapEntityTypeToIcon(type) }))
         // Sort by type and later by label
         .sort((a, b) => a.type !== b.type ? a.type - b.type : a.label.localeCompare(b.label))),
       tap(entities => {
@@ -51,16 +54,6 @@ export class EntityPickerComponent implements OnInit {
 
   findById(id: number) {
     return this._idToModel.get(id);
-  }
-
-  private mapTypeToIcon(type: EntityType): string {
-    switch (type) {
-      case EntityType.Character: return 'face';
-      case EntityType.Goal: return 'my_location';
-      case EntityType.Inventory: return 'beach_access';
-
-      default: return ''
-    }
   }
 
 }

@@ -57,6 +57,21 @@ export class InventoryComponent implements OnInit {
   }
 
   editRelations(id: number) {
-    EditEntityRelationsDialogComponent.showDialog(id, this._dialog);
+    EditEntityRelationsDialogComponent.showDialog(id, this._dialog)
+      .subscribe(updateResult => {
+        if (!updateResult) {
+          return;
+        }
+
+        if (updateResult.new) {
+          updateResult.new.forEach(x => this._entityService.addRelation(x.type, x.label, x.entities));
+        }
+        if (updateResult.deleted) {
+          updateResult.deleted.forEach(id => this._entityService.deleteRelation(id));
+        }
+        if (updateResult.updated) {
+          updateResult.updated.forEach(({ id, update }) => this._entityService.updateRelation(id, update));
+        }
+      });
   }
 }
