@@ -7,6 +7,7 @@ import { EntityService } from 'src/app/domain/entity.service';
 import { CreateNewEntityDialogComponent } from '../dialogs/create-new-entity-dialog/create-new-entity-dialog.component';
 import { EditEntityRelationsDialogComponent } from '../dialogs/edit-entity-relations-dialog/edit-entity-relations-dialog.component';
 import { EntityInfoDialogComponent } from '../dialogs/entity-info-dialog/entity-info-dialog.component';
+import { ConfirmationDialogComponent } from '../dialogs/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-inventory',
@@ -44,7 +45,11 @@ export class InventoryComponent implements OnInit {
   }
 
   delete(id: number) {
-    this._entityService.deleteEntityWithRelations(id);
+    ConfirmationDialogComponent.showDialog(`Are you sure you want to delete entity?`, this._dialog).subscribe(result => {
+      if (result) {
+        this._entityService.deleteEntityWithRelations(id);
+      }
+    })
   }
 
   edit(id: number) {
