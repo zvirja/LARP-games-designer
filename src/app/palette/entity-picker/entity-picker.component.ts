@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { EMPTY, Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { Component, EventEmitter, Input, OnInit, Output, OnDestroy } from '@angular/core';
+import { EMPTY, Observable, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { EntityType } from 'src/app/domain/entity';
 import { EntityService } from 'src/app/domain/entity.service';
 import { mapEntityTypeToIcon } from '../presentation-util';
+import * as _ from 'lodash';
 
 interface EntityModel {
   id: number,
@@ -17,8 +18,9 @@ interface EntityModel {
   templateUrl: './entity-picker.component.html',
   styleUrls: ['./entity-picker.component.scss']
 })
-export class EntityPickerComponent implements OnInit {
+export class EntityPickerComponent implements OnInit, OnDestroy {
   private _idToModel = new Map<number, EntityModel>();
+  private _optionsSubscription = Subscription.EMPTY;
 
   options$: Observable<EntityModel[]> = EMPTY;
 
@@ -39,17 +41,24 @@ export class EntityPickerComponent implements OnInit {
 
   ngOnInit() {
     this.options$ = this._entityService.entities$.pipe(
-      map(entities => entities
+      map(entities => _
+        .chain(entities)
         .map(({ id, label, type }) => ({ id, label, type, icon: mapEntityTypeToIcon(type) }))
         // Sort by type and later by label
-        .sort((a, b) => a.type !== b.type ? a.type - b.type : a.label.localeCompare(b.label))),
-      tap(entities => {
-        this._idToModel = entities.reduce((memo, model) => {
-          memo.set(model.id, model);
-          return memo
-        }, new Map<number, EntityModel>())
-      }),
-    )
+        .sortBy(['type', 'label'])
+        .value()),
+    );
+
+    this._optionsSubscription = this.options$.subscribe(entities => {
+      this._idToModel = entities.reduce((memo, model) => {
+        memo.set(model.id, model);
+        return memo
+      }, new Map<number, EntityModel>())
+    });
+  }
+
+  ngOnDestroy(): void {
+    this._optionsSubscription.unsubscribe();
   }
 
   findById(id: number) {
