@@ -9,3 +9,15 @@ export function mapEntityTypeToIcon(type: EntityType): string {
     default: return ''
   }
 }
+
+export function mapEntityTypeToLabel(type: EntityType, plural: boolean = false): string {
+  const index = plural ? 1 : 0;
+
+  switch (type) {
+    case EntityType.Character: return ['Character', 'Characters'][index];
+    case EntityType.Goal: return ['Goal', 'Goals'][index];
+    case EntityType.Inventory: return ['Item', 'Items'][index];
+
+    default: return '';
+  }
+}
