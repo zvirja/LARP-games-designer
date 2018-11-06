@@ -1,0 +1,21 @@
+<h2>Entities</h2>
+<button mat-stroked-button (click)="createNew()">Add new</button>
+
+<app-items-group *ngFor="let group of grouppedEntities$ | async" [title]="group.name" [items]="group.items">
+  <ng-template let-entity>
+    <mat-checkbox #check>&nbsp;</mat-checkbox>
+    <div class="label" (click)="check.toggle()">
+      <div>{{ entity.label }}</div>
+    </div>
+    <app-action-icon tooltip="Edit relations" (action)="editRelations(entity.id)">swap_horiz</app-action-icon>
+    <app-action-icon tooltip="Details" (action)="edit(entity.id)">list_alt</app-action-icon>
+    <app-action-icon [matMenuTriggerFor]="entityMenu" [matMenuTriggerData]="{ id: entity.id }">more_vert</app-action-icon>
+  </ng-template>
+</app-items-group>
+
+<mat-menu #entityMenu>
+  <ng-template matMenuContent let-id="id">
+    <button mat-menu-item (click)="editRelations(id)">Edit relations</button>
+    <button mat-menu-item class="warn" (click)="delete(id)">Remove</button>
+  </ng-template>
+</mat-menu>

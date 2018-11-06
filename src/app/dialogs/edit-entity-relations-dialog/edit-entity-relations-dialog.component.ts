@@ -1,12 +1,11 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { Observable, BehaviorSubject } from 'rxjs';
-import { RelationUpdate, Relation, RelationType } from 'src/app/domain/relation';
+import * as _ from 'lodash';
+import { BehaviorSubject } from 'rxjs';
 import { Entity } from 'src/app/domain/entity';
 import { EntityService } from 'src/app/domain/entity.service';
-import { mapEntityTypeToIcon } from '../../presentation-util';
+import { Relation, RelationType, RelationUpdate } from 'src/app/domain/relation';
 import { Mutable } from 'src/app/domain/utils';
-import * as _ from 'lodash'
 
 const NEW_ENTRIES_ID_START = -1000;
 
@@ -33,10 +32,6 @@ export class EditEntityRelationsDialogComponent implements OnInit {
   entity: Entity;
   entityRelations: Relation[];
   entityRelationsEditable$ = new BehaviorSubject<Array<Mutable<Relation>>>([]);
-
-  get entityIcon() {
-    return mapEntityTypeToIcon(this.entity.type);
-  }
 
   constructor(private readonly _dialogRef: MatDialogRef<EditEntityRelationsDialogComponent>,
     @Inject(MAT_DIALOG_DATA) private entityId: number,

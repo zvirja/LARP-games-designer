@@ -8,15 +8,16 @@ import { EditEntityRelationsDialogComponent } from '../dialogs/edit-entity-relat
 import { EntityInfoDialogComponent } from '../dialogs/entity-info-dialog/entity-info-dialog.component';
 import { ConfirmationDialogComponent } from '../dialogs/confirmation-dialog/confirmation-dialog.component';
 import * as _ from 'lodash';
-import { mapEntityTypeToLabel } from '../presentation-util';
+import { Entity } from 'src/app/domain/entity';
+import { mapEntityTypeToLabel } from '../utils/presentation-util';
 
 @Component({
-  selector: 'app-inventory',
-  templateUrl: './inventory.component.html',
-  styleUrls: ['./inventory.component.scss']
+  selector: 'app-inventory-panel',
+  templateUrl: './inventory-panel.component.html',
+  styleUrls: ['./inventory-panel.component.scss']
 })
-export class InventoryComponent implements OnInit {
-  grouppedEntities$: Observable<{ name: string, items: number[] }[]> = EMPTY;
+export class InventoryPanelComponent implements OnInit {
+  grouppedEntities$: Observable<{ name: string, items: Entity[] }[]> = EMPTY;
 
   constructor(private readonly _dialog: MatDialog, private readonly _entityService: EntityService) { }
 
@@ -26,7 +27,7 @@ export class InventoryComponent implements OnInit {
         .chain(entities)
         .sort(x => x.type)
         .groupBy(x => x.type)
-        .map((items, typeStr) => ({ name: mapEntityTypeToLabel(Number(typeStr), true), items: _.map(items, 'id') }))
+        .map((items, typeStr) => ({ name: mapEntityTypeToLabel(Number(typeStr), true), items }))
         .value()
       ),
     );

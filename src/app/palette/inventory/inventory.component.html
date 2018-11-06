@@ -1,5 +1,0 @@
-<h2>Entities</h2>
-<button mat-stroked-button (click)="createNew()">Add new</button>
-
-<app-entities-group *ngFor="let group of grouppedEntities$ | async" [title]="group.name" [ids]="group.items" (edit)="edit($event)"
-  (editRelations)="editRelations($event)" (delete)="delete($event)"></app-entities-group>

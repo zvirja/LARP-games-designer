@@ -1,7 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { EntityService } from 'src/app/domain/entity.service';
-import { mapEntityTypeToIcon } from '../../presentation-util';
 import { Entity } from 'src/app/domain/entity';
+import { mapEntityTypeToIcon } from 'src/app/utils/presentation-util';
 
 @Component({
   selector: 'app-entity-name',
