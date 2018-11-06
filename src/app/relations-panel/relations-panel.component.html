@@ -1,1 +1,20 @@
 <h1>Relations</h1>
+
+<app-items-group *ngFor="let entry of entitiesWithRelations$ | async" [items]="entry.relations">
+  <app-entity-name [entity]="entry.entity" item-group-title></app-entity-name>
+  <ng-template let-relation>
+    <mat-checkbox #check>&nbsp;</mat-checkbox>
+    <div class="label" (click)="check.toggle()">
+      <div>{{ relation.label }}</div>
+    </div>
+    <mat-icon [class.primary-relation]="relation.type === RelationType.Primary">swap_horiz</mat-icon>
+    <app-entity-name [id]="relation.entities[1]"></app-entity-name>
+    <app-action-icon [matMenuTriggerFor]="menu" [matMenuTriggerData]="{ id: relation.id }">more_vert</app-action-icon>
+  </ng-template>
+</app-items-group>
+
+<mat-menu #menu>
+  <ng-template matMenuContent let-id="id">
+    <button mat-menu-item class="warn" (click)="delete(id)">Remove</button>
+  </ng-template>
+</mat-menu>

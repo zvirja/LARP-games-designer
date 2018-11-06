@@ -107,16 +107,7 @@ export class EntityService {
   }
 
   deleteRelation(relationId: number) {
-    const index = this.relations.findIndex(x => x.id === relationId);
-    if (!index) {
-      return false;
-    }
-
-    const newRelations = [...this.relations];
-    newRelations.splice(index, 1);
-    this._relations$.next(newRelations);
-
-    return true;
+    this._relations$.next(this.relations.filter(r => r.id !== relationId));
   }
 
   updateRelation(relationId: number, update: RelationUpdate) {
