@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialogRef, MatDialog } from '@angular/material';
-import { Observable } from 'rxjs';
 import { EntityType } from 'src/app/domain/entity';
+import { EntityService } from 'src/app/domain/entity.service';
 
 @Component({
   selector: 'app-create-new-entity-dialog',
@@ -13,8 +13,8 @@ import { EntityType } from 'src/app/domain/entity';
   `]
 })
 export class CreateNewEntityDialogComponent {
-  static showDialog(dialogService: MatDialog): Observable<{ type: EntityType, name: string } | null> {
-    return dialogService.open(CreateNewEntityDialogComponent).afterClosed();
+  static showDialog(dialogService: MatDialog): void {
+    dialogService.open(CreateNewEntityDialogComponent);
   }
 
   EntityType = EntityType;
@@ -22,9 +22,10 @@ export class CreateNewEntityDialogComponent {
   type = EntityType.Character;
   name = '';
 
-  constructor(public dialogRef: MatDialogRef<CreateNewEntityDialogComponent>) { }
+  constructor(public dialogRef: MatDialogRef<CreateNewEntityDialogComponent>, private readonly _entityService: EntityService) { }
 
-  cancel(): void {
+  create() {
+    this._entityService.createEntity(this.type, this.name);
     this.dialogRef.close();
   }
 }

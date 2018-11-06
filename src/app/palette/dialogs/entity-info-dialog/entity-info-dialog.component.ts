@@ -1,6 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { Observable } from 'rxjs';
 import { EntityUpdate, Entity } from 'src/app/domain/entity';
 import { EntityService } from 'src/app/domain/entity.service';
 import { Mutable } from 'src/app/domain/utils';
@@ -14,8 +13,8 @@ export class EntityInfoDialogComponent implements OnInit {
   entity: Entity;
   entityEditable: Mutable<Entity>;
 
-  static showDialog(entityId: number, dialogService: MatDialog): Observable<EntityUpdate | undefined> {
-    return dialogService.open(EntityInfoDialogComponent, { data: entityId }).afterClosed();
+  static showDialog(entityId: number, dialogService: MatDialog): void {
+    dialogService.open(EntityInfoDialogComponent, { data: entityId });
   }
 
   constructor(private readonly _dialogRef: MatDialogRef<EntityInfoDialogComponent>,
@@ -25,10 +24,6 @@ export class EntityInfoDialogComponent implements OnInit {
   ngOnInit() {
     this.entity = this._entityServie.findEntityById(this.entityId)!;
     this.entityEditable = { ... this.entity };
-  }
-
-  discard() {
-    this._dialogRef.close();
   }
 
   save() {
@@ -42,10 +37,15 @@ export class EntityInfoDialogComponent implements OnInit {
       update.description = this.entityEditable.description;
     }
 
-    if (Object.keys(update).length === 0) {
-      update = undefined;
+
+    if (Object.keys(update).length > 0) {
+      this.writeToStorage(update);
     }
 
     this._dialogRef.close(update);
+  }
+
+  private writeToStorage(update: EntityUpdate) {
+    this._entityServie.updateEntity(this.entityId, update);
   }
 }

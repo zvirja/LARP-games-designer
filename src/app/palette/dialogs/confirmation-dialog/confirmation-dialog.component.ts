@@ -8,8 +8,12 @@ import { Observable } from 'rxjs';
   styleUrls: ['./confirmation-dialog.component.scss']
 })
 export class ConfirmationDialogComponent {
-  static showDialog(message: string, dialogService: MatDialog): Observable<boolean> {
-    return dialogService.open(ConfirmationDialogComponent, { data: message }).afterClosed();
+  static runWithConfirmation(message: string, action: () => void, dialogService: MatDialog): void {
+    dialogService.open(ConfirmationDialogComponent, { data: message }).afterClosed().subscribe(confirmed => {
+      if (confirmed) {
+        action();
+      }
+    });
   }
 
   constructor(private readonly _dialogRef: MatDialogRef<ConfirmationDialogComponent>, @Inject(MAT_DIALOG_DATA) public readonly message: string) { }

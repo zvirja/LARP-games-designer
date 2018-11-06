@@ -36,47 +36,21 @@ export class InventoryComponent implements OnInit {
   }
 
   createNew() {
-    CreateNewEntityDialogComponent.showDialog(this._dialog)
-      .subscribe((result) => {
-        if (result) {
-          this._entityService.createEntity(result.type, result.name);
-        }
-      })
+    CreateNewEntityDialogComponent.showDialog(this._dialog);
   }
 
   delete(id: number) {
-    ConfirmationDialogComponent.showDialog(`Are you sure you want to delete entity?`, this._dialog).subscribe(result => {
-      if (result) {
-        this._entityService.deleteEntityWithRelations(id);
-      }
-    })
+    ConfirmationDialogComponent.runWithConfirmation(
+      `Are you sure you want to delete entity?`,
+      () => this._entityService.deleteEntityWithRelations(id),
+      this._dialog);
   }
 
   edit(id: number) {
-    EntityInfoDialogComponent.showDialog(id, this._dialog)
-      .subscribe(updateResult => {
-        if (updateResult) {
-          this._entityService.updateEntity(id, updateResult);
-        }
-      });
+    EntityInfoDialogComponent.showDialog(id, this._dialog);
   }
 
   editRelations(id: number) {
-    EditEntityRelationsDialogComponent.showDialog(id, this._dialog)
-      .subscribe(updateResult => {
-        if (!updateResult) {
-          return;
-        }
-
-        if (updateResult.new) {
-          updateResult.new.forEach(x => this._entityService.addRelation(x.type, x.label, x.entities));
-        }
-        if (updateResult.deleted) {
-          updateResult.deleted.forEach(id => this._entityService.deleteRelation(id));
-        }
-        if (updateResult.updated) {
-          updateResult.updated.forEach(({ id, update }) => this._entityService.updateRelation(id, update));
-        }
-      });
+    EditEntityRelationsDialogComponent.showDialog(id, this._dialog);
   }
 }

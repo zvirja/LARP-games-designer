@@ -1,6 +1,6 @@
 <h1 mat-dialog-title>Relations – <mat-icon>{{ entityIcon }} </mat-icon> {{ entity.label }}</h1>
 <div mat-dialog-content>
-  <mat-table [dataSource]="entityRelationsEditable">
+  <mat-table [dataSource]="entityRelationsEditable$">
     <!-- Name Column -->
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
@@ -52,7 +52,7 @@
 
 <div mat-dialog-actions>
   <button mat-stroked-button class="primary" (click)="save()" cdkFocusInitial>Save</button>
-  <button mat-stroked-button (click)="discard()">Discard</button>
+  <button mat-stroked-button mat-dialog-close>Discard</button>
 </div>
 
 <mat-menu #menu>

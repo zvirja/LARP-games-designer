@@ -10,7 +10,7 @@ import * as _ from 'lodash'
 
 const NEW_ENTRIES_ID_START = -1000;
 
-export interface EditResult {
+interface EditResult {
   new?: Required<RelationUpdate>[],
   updated?: { id: number, update: RelationUpdate }[],
   deleted?: number[]
@@ -22,8 +22,8 @@ export interface EditResult {
   styleUrls: ['./edit-entity-relations-dialog.component.scss']
 })
 export class EditEntityRelationsDialogComponent implements OnInit {
-  static showDialog(entityId: number, dialogService: MatDialog): Observable<EditResult | undefined> {
-    return dialogService.open(EditEntityRelationsDialogComponent, { data: entityId }).afterClosed();
+  static showDialog(entityId: number, dialogService: MatDialog): void {
+    dialogService.open(EditEntityRelationsDialogComponent, { data: entityId });
   }
 
   private newEntriesId = NEW_ENTRIES_ID_START;
@@ -32,7 +32,7 @@ export class EditEntityRelationsDialogComponent implements OnInit {
 
   entity: Entity;
   entityRelations: Relation[];
-  entityRelationsEditable = new BehaviorSubject<Array<Mutable<Relation>>>([]);
+  entityRelationsEditable$ = new BehaviorSubject<Array<Mutable<Relation>>>([]);
 
   get entityIcon() {
     return mapEntityTypeToIcon(this.entity.type);
@@ -53,24 +53,20 @@ export class EditEntityRelationsDialogComponent implements OnInit {
         r.entities = [r.entities[1], r.entities[0]]
       }
     });
-    this.entityRelationsEditable.next(mutableRelations);
+    this.entityRelationsEditable$.next(mutableRelations);
   }
 
   removeRelation(id: number) {
-    this.entityRelationsEditable.next(_.filter(this.entityRelationsEditable.value, x => x.id !== id));
+    this.entityRelationsEditable$.next(_.filter(this.entityRelationsEditable$.value, x => x.id !== id));
   }
 
   addNew() {
     const newRelation = new Relation(this.newEntriesId--, RelationType.Auxiliary, '', [this.entityId, -1]);
-    this.entityRelationsEditable.next(_.concat(this.entityRelationsEditable.value, { ...newRelation }));
-  }
-
-  discard() {
-    this._dialogRef.close();
+    this.entityRelationsEditable$.next(_.concat(this.entityRelationsEditable$.value, { ...newRelation }));
   }
 
   save() {
-    const snapshot = this.entityRelationsEditable.value;
+    const snapshot = this.entityRelationsEditable$.value;
     const original = this.entityRelations;
 
     const deleted = _.differenceBy(original, snapshot, x => x.id).map(x => x.id);
@@ -110,6 +106,22 @@ export class EditEntityRelationsDialogComponent implements OnInit {
       editResult.updated = changed;
     }
 
+    this.writeToStorage(editResult);
+
     this._dialogRef.close(editResult);
+  }
+
+  private writeToStorage(updateResult: EditResult) {
+    if (updateResult.new) {
+      updateResult.new.forEach(x => this._entityService.addRelation(x.type, x.label, x.entities));
+    }
+
+    if (updateResult.deleted) {
+      updateResult.deleted.forEach(id => this._entityService.deleteRelation(id));
+    }
+
+    if (updateResult.updated) {
+      updateResult.updated.forEach(({ id, update }) => this._entityService.updateRelation(id, update));
+    }
   }
 }
