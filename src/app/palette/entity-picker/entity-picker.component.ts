@@ -19,17 +19,18 @@ interface EntityModel {
   styleUrls: ['./entity-picker.component.scss']
 })
 export class EntityPickerComponent implements OnInit, OnDestroy {
-  private _idToModel = new Map<number, EntityModel>();
   private _optionsSubscription = Subscription.EMPTY;
 
-  options$: Observable<EntityModel[]> = EMPTY;
+  options: EntityModel[] = [];
 
+  private _selectedOption: EntityModel;
   get selectedOption() {
-    return this.entityId;
+    return this._selectedOption;
   }
-  set selectedOption(value: number | undefined) {
-    this.entityId = value;
-    this.entityIdChange.next(value);
+  set selectedOption(value: EntityModel) {
+    this._selectedOption = value;
+    this.entityId = value.id;
+    this.entityIdChange.next(value.id);
   }
 
   @Input() entityId?: number;
@@ -40,29 +41,22 @@ export class EntityPickerComponent implements OnInit, OnDestroy {
   constructor(private readonly _entityService: EntityService) { }
 
   ngOnInit() {
-    this.options$ = this._entityService.entities$.pipe(
-      map(entities => _
-        .chain(entities)
-        .map(({ id, label, type }) => ({ id, label, type, icon: mapEntityTypeToIcon(type) }))
-        // Sort by type and later by label
-        .sortBy(['type', 'label'])
-        .value()),
-    );
-
-    this._optionsSubscription = this.options$.subscribe(entities => {
-      this._idToModel = entities.reduce((memo, model) => {
-        memo.set(model.id, model);
-        return memo
-      }, new Map<number, EntityModel>())
-    });
+    this._optionsSubscription = this._entityService.entities$
+      .pipe(
+        map(entities => _
+          .chain(entities)
+          .map(({ id, label, type }) => ({ id, label, type, icon: mapEntityTypeToIcon(type) }))
+          // Sort by type and later by label
+          .sortBy(['type', 'label'])
+          .value()),
+      )
+      .subscribe(options => {
+        this.options = options;
+        this._selectedOption = _.find(options, { id: this.entityId })!
+      });
   }
 
   ngOnDestroy(): void {
     this._optionsSubscription.unsubscribe();
   }
-
-  findById(id: number) {
-    return this._idToModel.get(id);
-  }
-
 }
