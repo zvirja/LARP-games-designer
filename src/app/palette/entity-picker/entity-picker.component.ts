@@ -1,17 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output, OnDestroy } from '@angular/core';
-import { EMPTY, Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { EntityType } from 'src/app/domain/entity';
+import { Entity } from 'src/app/domain/entity';
 import { EntityService } from 'src/app/domain/entity.service';
-import { mapEntityTypeToIcon } from '../presentation-util';
 import * as _ from 'lodash';
-
-interface EntityModel {
-  id: number,
-  type: EntityType,
-  icon: string,
-  label: string
-}
 
 @Component({
   selector: 'app-entity-picker',
@@ -21,16 +13,17 @@ interface EntityModel {
 export class EntityPickerComponent implements OnInit, OnDestroy {
   private _optionsSubscription = Subscription.EMPTY;
 
-  options: EntityModel[] = [];
+  options: Entity[] = [];
 
-  private _selectedOption: EntityModel;
+  private _selectedOption: Entity | undefined;
   get selectedOption() {
     return this._selectedOption;
   }
-  set selectedOption(value: EntityModel) {
+  set selectedOption(value: Entity | undefined) {
     this._selectedOption = value;
-    this.entityId = value.id;
-    this.entityIdChange.next(value.id);
+
+    this.entityId = value ? value.id : undefined;
+    this.entityIdChange.next(this.entityId);
   }
 
   @Input() entityId?: number;
@@ -43,16 +36,11 @@ export class EntityPickerComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this._optionsSubscription = this._entityService.entities$
       .pipe(
-        map(entities => _
-          .chain(entities)
-          .map(({ id, label, type }) => ({ id, label, type, icon: mapEntityTypeToIcon(type) }))
-          // Sort by type and later by label
-          .sortBy(['type', 'label'])
-          .value()),
+        map(entities => _.sortBy(entities, ['type', 'label'])),
       )
       .subscribe(options => {
         this.options = options;
-        this._selectedOption = _.find(options, { id: this.entityId })!
+        this._selectedOption = _.find(options, { id: this.entityId })
       });
   }
 

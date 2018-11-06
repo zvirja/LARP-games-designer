@@ -15,6 +15,7 @@ import { EditEntityRelationsDialogComponent } from './palette/dialogs/edit-entit
 import { EntityPickerComponent } from './palette/entity-picker/entity-picker.component';
 import { EntityInfoDialogComponent } from './palette/dialogs/entity-info-dialog/entity-info-dialog.component';
 import { ConfirmationDialogComponent } from './palette/dialogs/confirmation-dialog/confirmation-dialog.component';
+import { EntityNameComponent } from './palette/bricks/entity-name/entity-name.component';
 
 @NgModule({
   imports: [
@@ -45,6 +46,7 @@ import { ConfirmationDialogComponent } from './palette/dialogs/confirmation-dial
     EntityPickerComponent,
     EntityInfoDialogComponent,
     ConfirmationDialogComponent,
+    EntityNameComponent,
   ],
   entryComponents: [CreateNewEntityDialogComponent, EditEntityRelationsDialogComponent, EntityInfoDialogComponent, ConfirmationDialogComponent],
   providers: [],

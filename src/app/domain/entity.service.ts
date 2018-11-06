@@ -2,6 +2,8 @@ import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable } from "rxjs";
 import { Entity, EntityType, EntityUpdate } from "./entity";
 import { Relation, RelationType, RelationUpdate } from "./relation";
+import { filter, map } from "rxjs/operators";
+import * as _ from 'lodash';
 
 @Injectable({ providedIn: 'root' })
 export class EntityService {
@@ -42,13 +44,14 @@ export class EntityService {
     return this._relations$.value;
   }
 
-  findEntityById(id: number) {
-    const index = this.entities.findIndex(x => x.id === id);
-    if (index === -1) {
-      return undefined;
-    }
+  findEntityById(id: number): Entity | undefined {
+    return _.find(this.entities, { id });
+  }
 
-    return this.entities[index];
+  watchEntityById(id: number): Observable<Entity | undefined> {
+    return this.entities$.pipe(
+      map(values => _.find(values, { id }))
+    )
   }
 
   createEntity(type: EntityType, label: string, description?: string) {

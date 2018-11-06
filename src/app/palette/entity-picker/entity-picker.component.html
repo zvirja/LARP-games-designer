@@ -2,13 +2,11 @@
   <mat-select [(value)]="selectedOption" [placeholder]="placeholder" #picker>
     <mat-select-trigger>
       <ng-container *ngIf="picker.value; let modelById">
-        <mat-icon>{{ modelById.icon }}</mat-icon>
-        <span>{{ modelById.label }}</span>
+        <app-entity-name [entity]="picker.value"></app-entity-name>
       </ng-container>
     </mat-select-trigger>
     <mat-option *ngFor="let option of options" [value]="option">
-      <mat-icon>{{ option.icon }}</mat-icon>
-      <span>{{ option.label }}</span>
+      <app-entity-name [entity]="option"></app-entity-name>
     </mat-option>
   </mat-select>
 </mat-form-field>
