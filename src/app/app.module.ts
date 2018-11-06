@@ -12,7 +12,7 @@ import { EntitiesGroupComponent } from './palette/entities-group/entities-group.
 import { InventoryComponent } from './palette/inventory/inventory.component';
 import { CreateNewEntityDialogComponent } from './palette/dialogs/create-new-entity-dialog/create-new-entity-dialog.component';
 import { EditEntityRelationsDialogComponent } from './palette/dialogs/edit-entity-relations-dialog/edit-entity-relations-dialog.component';
-import { EntityPickerComponent } from './palette/entity-picker/entity-picker.component';
+import { EntityPickerComponent } from './palette/bricks/entity-picker/entity-picker.component';
 import { EntityInfoDialogComponent } from './palette/dialogs/entity-info-dialog/entity-info-dialog.component';
 import { ConfirmationDialogComponent } from './palette/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { EntityNameComponent } from './palette/bricks/entity-name/entity-name.component';
