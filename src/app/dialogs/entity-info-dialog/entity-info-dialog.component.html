@@ -2,17 +2,19 @@
 
 <h1 mat-dialog-title>Details</h1>
 <div mat-dialog-content class="content">
-  <mat-form-field>
-    <input matInput placeholder="Name" [(ngModel)]="entityEditable['label']">
-  </mat-form-field>
-
-  Description:
-  <div class="edit-container">
-    <quill-editor [(ngModel)]="entityEditable['description']"></quill-editor>
+  <div>
+    <span class="caption">Name: </span>
+    {{ entity.label }}
   </div>
 
+  <br />
+
+  <div class="caption">Description:</div>
+  <div [innerHTML]="entity.description ? entity.description : '<em>No content</em>'" class="description"></div>
+
 </div>
+
 <div mat-dialog-actions>
-  <button mat-stroked-button color="primary" (click)="save()" cdkFocusInitial>Save</button>
-  <button mat-stroked-button mat-dialog-close>Discard</button>
+  <button mat-stroked-button (click)="showEditDialog()">Edit</button>
+  <button mat-stroked-button color="primary" mat-dialog-close>Close</button>
 </div>

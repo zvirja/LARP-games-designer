@@ -8,13 +8,14 @@
       <div>{{ entity.label }}</div>
     </div>
     <app-action-icon tooltip="Edit relations" (action)="editRelations(entity.id)">swap_horiz</app-action-icon>
-    <app-action-icon tooltip="Details" (action)="edit(entity.id)">list_alt</app-action-icon>
+    <app-action-icon tooltip="Details" (action)="showDetails(entity.id)">list_alt</app-action-icon>
     <app-action-icon [matMenuTriggerFor]="entityMenu" [matMenuTriggerData]="{ id: entity.id }">more_vert</app-action-icon>
   </ng-template>
 </app-items-group>
 
 <mat-menu #entityMenu>
   <ng-template matMenuContent let-id="id">
+    <button mat-menu-item (click)="edit(id)">Edit details</button>
     <button mat-menu-item (click)="editRelations(id)">Edit relations</button>
     <button mat-menu-item class="warn" (click)="delete(id)">Remove</button>
   </ng-template>

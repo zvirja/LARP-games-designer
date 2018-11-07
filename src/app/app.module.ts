@@ -22,6 +22,7 @@ import { RelationsPanelComponent } from './relations-panel/relations-panel.compo
 import { ItemsGroupComponent } from './bricks/items-group/items-group.component';
 import { ActionIconComponent } from './bricks/action-icon/action-icon.component';
 import { DialogCloseButtonComponent } from './bricks/dialog-close-button/dialog-close-button.component';
+import { EditEntityInfoDialogComponent } from './dialogs/edit-entity-info-dialog/edit-entity-info-dialog.component';
 
 @NgModule({
   imports: [
@@ -57,8 +58,14 @@ import { DialogCloseButtonComponent } from './bricks/dialog-close-button/dialog-
     ItemsGroupComponent,
     ActionIconComponent,
     DialogCloseButtonComponent,
+    EditEntityInfoDialogComponent,
   ],
-  entryComponents: [CreateNewEntityDialogComponent, EditEntityRelationsDialogComponent, EntityInfoDialogComponent, ConfirmationDialogComponent],
+  entryComponents: [
+    CreateNewEntityDialogComponent,
+    EditEntityRelationsDialogComponent,
+    EntityInfoDialogComponent,
+    EditEntityInfoDialogComponent,
+    ConfirmationDialogComponent],
   providers: [],
   bootstrap: [AppComponent]
 })

@@ -1,0 +1,17 @@
+<h1 mat-dialog-title>Edit details</h1>
+<div mat-dialog-content class="content">
+  <mat-form-field>
+    <input matInput placeholder="Name" [(ngModel)]="entityEditable['label']">
+  </mat-form-field>
+
+  Description:
+  <div class="edit-container">
+    <quill-editor [(ngModel)]="entityEditable['description']"></quill-editor>
+  </div>
+
+</div>
+<div mat-dialog-actions>
+  <button mat-stroked-button color="primary" (click)="save()" cdkFocusInitial>Save</button>
+  <button mat-stroked-button mat-dialog-close>Discard</button>
+</div>
+

@@ -1,10 +1,7 @@
 :host {
   display: flex;
   flex-direction: column;
-
-  width: 60vw;
-  height: 60vh;
-
+  min-height: 70vh;
   position: relative;
 }
 
@@ -15,15 +12,9 @@
   flex-direction: column;
 }
 
-.caption {
-  font-weight: bold;
-  font-size: 1.1em;
-}
-
-.description {
+.edit-container {
   flex: 1 1 auto;
   overflow: auto;
-  background-color: #f5f5f5;
 }
 
 button {

@@ -10,6 +10,7 @@ import { ConfirmationDialogComponent } from '../dialogs/confirmation-dialog/conf
 import * as _ from 'lodash';
 import { Entity } from 'src/app/domain/entity';
 import { mapEntityTypeToLabel } from '../utils/presentation-util';
+import { EditEntityInfoDialogComponent } from '../dialogs/edit-entity-info-dialog/edit-entity-info-dialog.component';
 
 @Component({
   selector: 'app-inventory-panel',
@@ -44,8 +45,12 @@ export class InventoryPanelComponent implements OnInit {
       this._dialog);
   }
 
-  edit(id: number) {
+  showDetails(id: number) {
     EntityInfoDialogComponent.showDialog(id, this._dialog);
+  }
+
+  edit(id: number) {
+    EditEntityInfoDialogComponent.showDialog(id, this._dialog);
   }
 
   editRelations(id: number) {
