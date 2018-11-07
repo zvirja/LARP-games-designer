@@ -33,7 +33,7 @@ export class EditEntityRelationsDialogComponent implements OnInit {
   entityRelations: Relation[];
   entityRelationsEditable$ = new BehaviorSubject<Array<Mutable<Relation>>>([]);
 
-  constructor(private readonly _dialogRef: MatDialogRef<EditEntityRelationsDialogComponent>,
+  constructor(public readonly dialogRef: MatDialogRef<EditEntityRelationsDialogComponent>,
     @Inject(MAT_DIALOG_DATA) private entityId: number,
     private readonly _entityService: EntityService) { }
 
@@ -103,7 +103,7 @@ export class EditEntityRelationsDialogComponent implements OnInit {
 
     this.writeToStorage(editResult);
 
-    this._dialogRef.close(editResult);
+    this.dialogRef.close(editResult);
   }
 
   private writeToStorage(updateResult: EditResult) {

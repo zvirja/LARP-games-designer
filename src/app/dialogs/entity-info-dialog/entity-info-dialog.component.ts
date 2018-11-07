@@ -17,7 +17,7 @@ export class EntityInfoDialogComponent implements OnInit {
     dialogService.open(EntityInfoDialogComponent, { data: entityId });
   }
 
-  constructor(private readonly _dialogRef: MatDialogRef<EntityInfoDialogComponent>,
+  constructor(public readonly dialogRef: MatDialogRef<EntityInfoDialogComponent>,
     @Inject(MAT_DIALOG_DATA) private entityId: number,
     private readonly _entityServie: EntityService) { }
 
@@ -42,7 +42,7 @@ export class EntityInfoDialogComponent implements OnInit {
       this.writeToStorage(update);
     }
 
-    this._dialogRef.close(update);
+    this.dialogRef.close(update);
   }
 
   private writeToStorage(update: EntityUpdate) {
