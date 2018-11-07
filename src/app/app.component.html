@@ -1,5 +1,23 @@
-<app-inventory-panel></app-inventory-panel>
+<mat-drawer-container>
+  <mat-drawer mode="side" id="inventory-panel-sidenav" #inventory opened disableClose>
+    <div class="flex-content-wrapper">
+      <app-inventory-panel></app-inventory-panel>
+    </div>
+  </mat-drawer>
 
-<app-canvas></app-canvas>
+  <mat-drawer-content>
+    <app-action-icon class="expand-collapse-icon" (action)="inventory.toggle()" tooltip="Characters & Entities">
+      {{ inventory.opened ? 'chevron_left': 'chevron_right' }}
+    </app-action-icon>
 
-<app-relations-panel></app-relations-panel>
+    <app-action-icon class="expand-collapse-icon right" (action)="relations.toggle()" tooltip="Relations">
+      {{ relations.opened ? 'chevron_right': 'chevron_left' }}
+    </app-action-icon>
+
+    <app-canvas></app-canvas>
+  </mat-drawer-content>
+
+  <mat-drawer mode="side" position="end" id="relations-panel-sidenav" #relations disableClose>
+    <app-relations-panel></app-relations-panel>
+  </mat-drawer>
+</mat-drawer-container>

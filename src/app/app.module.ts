@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {
   MatListModule, MatCheckboxModule, MatButtonModule, MatMenuModule, MatCommonModule, MatIconModule, MatDialogModule,
-  MatFormFieldModule, MatSelectModule, MatInputModule, MatTableModule
+  MatFormFieldModule, MatSelectModule, MatInputModule, MatTableModule, MatSidenavModule
 } from '@angular/material'
 import { QuillModule } from 'ngx-quill'
 
@@ -39,7 +39,8 @@ import { ActionIconComponent } from './bricks/action-icon/action-icon.component'
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-    MatTableModule
+    MatTableModule,
+    MatSidenavModule
   ],
   declarations: [
     AppComponent,

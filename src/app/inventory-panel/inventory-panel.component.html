@@ -1,4 +1,4 @@
-<h2>Entities</h2>
+<h1>Entities</h1>
 <button mat-stroked-button (click)="createNew()">Add new</button>
 
 <app-items-group *ngFor="let group of grouppedEntities$ | async" [title]="group.name" [items]="group.items">

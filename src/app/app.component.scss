@@ -2,18 +2,46 @@
     width: 100%;
     height: 100%;
 
-    display: flex;
-    flex-direction: row;
+    display: block;
+}
 
-    * {
-        flex: 1 1 auto;
-    }
+mat-drawer-container {
+  height: 100%;
+  width: 100%;
+}
 
-    app-inventory-panel {
-      flex: 0 0 300px;
-    }
+app-inventory-panel, app-relations-panel {
+  flex: 1 1 auto;
+}
 
-    app-relations-panel {
-      flex: 0 0 400px;
-    }
+app-canvas {
+  height: 100%;
+  width: 100%;
+}
+
+#inventory-panel-sidenav, #relations-panel-sidenav {
+  width: 400px;
+}
+
+.flex-content-wrapper {
+  height: 100%;
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+}
+
+.expand-collapse-icon {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  z-index: 10;
+
+  &.right {
+    right: 0;
+    left: auto;
+  }
 }
