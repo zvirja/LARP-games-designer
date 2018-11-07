@@ -1,4 +1,4 @@
-import { Omit, Mutable } from "./utils";
+import { Omit, Mutable } from "../utils/type";
 
 export enum EntityType {
   Character,

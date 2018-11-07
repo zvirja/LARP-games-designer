@@ -1,8 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { Entity, EntityUpdate } from 'src/app/domain/entity';
-import { Mutable } from 'src/app/domain/utils';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { EntityService } from 'src/app/domain/entity.service';
+import { Mutable } from 'src/app/utils/type';
 
 @Component({
   selector: 'app-edit-entity-info-dialog',

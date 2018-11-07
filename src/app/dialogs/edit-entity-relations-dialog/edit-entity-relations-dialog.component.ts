@@ -5,7 +5,7 @@ import { BehaviorSubject } from 'rxjs';
 import { Entity } from 'src/app/domain/entity';
 import { EntityService } from 'src/app/domain/entity.service';
 import { Relation, RelationType, RelationUpdate } from 'src/app/domain/relation';
-import { Mutable } from 'src/app/domain/utils';
+import { Mutable } from 'src/app/utils/type';
 
 const NEW_ENTRIES_ID_START = -1000;
 
