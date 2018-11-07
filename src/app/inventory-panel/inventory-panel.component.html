@@ -3,8 +3,8 @@
 
 <app-items-group *ngFor="let group of grouppedEntities$ | async" [title]="group.name" [items]="group.items">
   <ng-template let-entity>
-    <mat-checkbox #check>&nbsp;</mat-checkbox>
-    <div class="label" (click)="check.toggle()">
+    <mat-checkbox [checked]="selectionState.isEntitySelected(entity.id)" (change)="setEntitySelection(entity.id, $event.checked)" #check>&nbsp;</mat-checkbox>
+    <div class="label" (click)="toggleEntitySelection(entity.id)">
       <div>{{ entity.label }}</div>
     </div>
     <app-action-icon tooltip="Edit relations" (action)="editRelations(entity.id)">swap_horiz</app-action-icon>

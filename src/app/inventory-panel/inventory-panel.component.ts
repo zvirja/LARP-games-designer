@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { EMPTY, Observable } from 'rxjs';
+import { EMPTY, Observable, Subscription } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { EntityService } from 'src/app/domain/entity.service';
 import { CreateNewEntityDialogComponent } from '../dialogs/create-new-entity-dialog/create-new-entity-dialog.component';
@@ -11,16 +11,21 @@ import * as _ from 'lodash';
 import { Entity } from 'src/app/domain/entity';
 import { mapEntityTypeToLabel } from '../utils/presentation-util';
 import { EditEntityInfoDialogComponent } from '../dialogs/edit-entity-info-dialog/edit-entity-info-dialog.component';
+import { SelectionState } from '../domain/selection-state';
+import { SelectionService } from '../domain/selection.service';
 
 @Component({
   selector: 'app-inventory-panel',
   templateUrl: './inventory-panel.component.html',
   styleUrls: ['./inventory-panel.component.scss']
 })
-export class InventoryPanelComponent implements OnInit {
-  grouppedEntities$: Observable<{ name: string, items: Entity[] }[]> = EMPTY;
+export class InventoryPanelComponent implements OnInit, OnDestroy {
+  private _selectionStateSubscription = Subscription.EMPTY;
 
-  constructor(private readonly _dialog: MatDialog, private readonly _entityService: EntityService) { }
+  grouppedEntities$: Observable<{ name: string, items: Entity[] }[]> = EMPTY;
+  selectionState: SelectionState;
+
+  constructor(private readonly _dialog: MatDialog, private readonly _entityService: EntityService, private readonly _selectionService: SelectionService) { }
 
   ngOnInit() {
     this.grouppedEntities$ = this._entityService.entities$.pipe(
@@ -32,6 +37,14 @@ export class InventoryPanelComponent implements OnInit {
         .value()
       ),
     );
+
+    this._selectionStateSubscription = this._selectionService.selectionState$.subscribe(v => {
+      this.selectionState = v;
+    })
+  }
+
+  ngOnDestroy(): void {
+    this._selectionStateSubscription.unsubscribe();
   }
 
   createNew() {
@@ -56,4 +69,13 @@ export class InventoryPanelComponent implements OnInit {
   editRelations(id: number) {
     EditEntityRelationsDialogComponent.showDialog(id, this._dialog);
   }
+
+  toggleEntitySelection(id: number) {
+    this._selectionService.toggleEntitySelection(id);
+  }
+
+  setEntitySelection(id: number, isSelected: boolean) {
+    this._selectionService.setEntitySelection(id, isSelected);
+  }
+
 }

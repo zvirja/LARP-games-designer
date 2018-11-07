@@ -3,8 +3,8 @@
 <app-items-group *ngFor="let entry of entitiesWithRelations$ | async" [items]="entry.relations">
   <app-entity-name [entity]="entry.entity" item-group-title></app-entity-name>
   <ng-template let-relation>
-    <mat-checkbox #check>&nbsp;</mat-checkbox>
-    <div class="label" (click)="check.toggle()">
+    <mat-checkbox [checked]="selectionState.isRelationSelected(relation.id)" (change)="setRelationSelection(relation.id, $event.checked)" #check>&nbsp;</mat-checkbox>
+    <div class="label" (click)="toggleRelationSelection(relation.id)">
       <div>{{ relation.label }}</div>
     </div>
     <mat-icon [class.primary-relation]="relation.type === RelationType.Primary">swap_horiz</mat-icon>

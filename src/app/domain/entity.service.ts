@@ -96,6 +96,10 @@ export class EntityService {
     this._entities$.next(copy)
   }
 
+  findRelationById(id: number) {
+    return _.find(this.relations, { id });
+  }
+
   addRelation(type: RelationType, label: string, entities: [number, number]) {
     this.assertEntityExists(entities[0]);
     this.assertEntityExists(entities[1]);
