@@ -3,8 +3,7 @@ import { Omit, Mutable } from "../utils/type";
 export enum EntityType {
   Character,
   Goal,
-  Inventory,
-  Relation
+  Inventory
 }
 
 export class Entity {

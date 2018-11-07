@@ -1,18 +1,18 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
+import * as _ from 'lodash';
 import { EMPTY, Observable, Subscription } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
+import { Entity, EntityType } from 'src/app/domain/entity';
 import { EntityService } from 'src/app/domain/entity.service';
+import { ConfirmationDialogComponent } from '../dialogs/confirmation-dialog/confirmation-dialog.component';
 import { CreateNewEntityDialogComponent } from '../dialogs/create-new-entity-dialog/create-new-entity-dialog.component';
+import { EditEntityInfoDialogComponent } from '../dialogs/edit-entity-info-dialog/edit-entity-info-dialog.component';
 import { EditEntityRelationsDialogComponent } from '../dialogs/edit-entity-relations-dialog/edit-entity-relations-dialog.component';
 import { EntityInfoDialogComponent } from '../dialogs/entity-info-dialog/entity-info-dialog.component';
-import { ConfirmationDialogComponent } from '../dialogs/confirmation-dialog/confirmation-dialog.component';
-import * as _ from 'lodash';
-import { Entity } from 'src/app/domain/entity';
-import { mapEntityTypeToLabel } from '../utils/presentation-util';
-import { EditEntityInfoDialogComponent } from '../dialogs/edit-entity-info-dialog/edit-entity-info-dialog.component';
 import { SelectionState } from '../domain/selection-state';
 import { SelectionService } from '../domain/selection.service';
+import { mapEntityTypeToLabel } from '../utils/presentation-util';
 
 @Component({
   selector: 'app-inventory-panel',
@@ -20,10 +20,15 @@ import { SelectionService } from '../domain/selection.service';
   styleUrls: ['./inventory-panel.component.scss']
 })
 export class InventoryPanelComponent implements OnInit, OnDestroy {
+  EntityType = EntityType;
+  mapEntityTypeToLabel = mapEntityTypeToLabel;
+
   private _selectionStateSubscription = Subscription.EMPTY;
 
   grouppedEntities$: Observable<{ name: string, items: Entity[] }[]> = EMPTY;
   selectionState: SelectionState;
+
+  AllEntityTypes = [EntityType.Character, EntityType.Goal, EntityType.Inventory];
 
   constructor(private readonly _dialog: MatDialog, private readonly _entityService: EntityService, private readonly _selectionService: SelectionService) { }
 
@@ -76,6 +81,18 @@ export class InventoryPanelComponent implements OnInit, OnDestroy {
 
   setEntitySelection(id: number, isSelected: boolean) {
     this._selectionService.setEntitySelection(id, isSelected);
+  }
+
+  selectRelatedEntities(id: number, type?: EntityType) {
+    if (!type) {
+      this._selectionService.selectEntityWithAllRelated(id);
+      return;
+    }
+
+    this._selectionService.selectEntities(this._entityService
+      .findAllRelatedEntities(id)
+      .filter(e => e.type === type)
+      .map(e => e.id));
   }
 
 }

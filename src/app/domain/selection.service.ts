@@ -46,6 +46,11 @@ export class SelectionService {
     }
   }
 
+  selectEntities(ids: ReadonlyArray<number>) {
+    ids.forEach(id => this.selectedEntities.add(id));
+    this.increaseRevision();
+  }
+
   selectRelation(id: number) {
     const relation = this._entityService.findRelationById(id);
     if (!relation) {

@@ -3,7 +3,8 @@
 
 <app-items-group *ngFor="let group of grouppedEntities$ | async" [title]="group.name" [items]="group.items">
   <ng-template let-entity>
-    <mat-checkbox [checked]="selectionState.isEntitySelected(entity.id)" (change)="setEntitySelection(entity.id, $event.checked)" #check>&nbsp;</mat-checkbox>
+    <mat-checkbox [checked]="selectionState.isEntitySelected(entity.id)" (change)="setEntitySelection(entity.id, $event.checked)"
+      #check>&nbsp;</mat-checkbox>
     <div class="label" (click)="toggleEntitySelection(entity.id)">
       <div>{{ entity.label }}</div>
     </div>
@@ -15,8 +16,21 @@
 
 <mat-menu #entityMenu>
   <ng-template matMenuContent let-id="id">
+    <button mat-menu-item [matMenuTriggerFor]="selectRelated" [matMenuTriggerData]="{ id: id }">Select related</button>
+    <mat-divider></mat-divider>
     <button mat-menu-item (click)="edit(id)">Edit details</button>
     <button mat-menu-item (click)="editRelations(id)">Edit relations</button>
-    <button mat-menu-item class="warn" (click)="delete(id)">Remove</button>
+    <mat-divider></mat-divider>
+    <button mat-menu-item (click)="delete(id)">Remove</button>
+  </ng-template>
+</mat-menu>
+
+<mat-menu #selectRelated>
+  <ng-template matMenuContent let-id="id">
+    <button mat-menu-item (click)="selectRelatedEntities(id)">All</button>
+    <mat-divider></mat-divider>
+    <button *ngFor="let type of AllEntityTypes" mat-menu-item (click)="selectRelatedEntities(id, type)">
+      {{ mapEntityTypeToLabel(type, true) }}
+    </button>
   </ng-template>
 </mat-menu>
