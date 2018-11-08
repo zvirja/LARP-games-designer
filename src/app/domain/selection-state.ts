@@ -1,12 +1,12 @@
 import { Relation } from "./relation";
 
 export class SelectionState {
-  constructor(private readonly _selection: ReadonlySet<number>, private readonly _relations: ReadonlyArray<Relation>) { }
+  constructor(public readonly selectedEntities: ReadonlySet<number>, private readonly _relations: ReadonlyArray<Relation>) { }
 
   private _cachedSelectedRelations?: Set<number>;
 
   isEntitySelected(id: number) {
-    return this._selection.has(id);
+    return this.selectedEntities.has(id);
   }
 
   isRelationSelected(id: number) {

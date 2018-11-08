@@ -27,17 +27,8 @@ export class EditEntityInfoDialogComponent implements OnInit {
   }
 
   save() {
-    let update: EntityUpdate | undefined = {};
-
-    if (this.entity.label !== this.entityEditable.label) {
-      update.label = this.entityEditable.label;
-    }
-
-    if (this.entity.description !== this.entityEditable.description) {
-      update.description = this.entityEditable.description;
-    }
-
-    if (Object.keys(update).length > 0) {
+    const update = Entity.getDiff(this.entity, this.entityEditable);
+    if (update) {
       this.writeToStorage(update);
     }
 
